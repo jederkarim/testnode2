@@ -56,25 +56,24 @@ exports.affectcours = async (req, res) => {
 
         const cour = await cours.findById(req.params.idcours)
         console.log(cour)
-        const nombreachat = 0;
-        cours.findByIdAndUpdate(req.params.idclient, { $inc: { nombreachat: cour.nombreachat +1 } }, { new: true })
+        cours.findByIdAndUpdate(req.params.idcours, { $inc: { nombreachat: cour.nombreachat +1 } }, { new: true })
         clients.findById(req.params.idclient).populate('cours').then((updatedclient) => { res.send(updatedclient) })
 
-        // let transporter = nodemailer.createTransport({
-        //     service: process.env.SERVICE,
-        //     secure: false,
-        //     auth: {
-        //         user: process.env.USER,
-        //         pass: process.env.PASS
-        //     },
-        // });
+        let transporter = nodemailer.createTransport({
+            service: process.env.SERVICE,
+            secure: false,
+            auth: {
+                user: process.env.USER,
+                pass: process.env.PASS
+            },
+        });
 
-        // let info = await transporter.sendMail({
-        //     from: process.env.USER,
-        //     to: req.body.email,
-        //     subject: "Hello ✔",
-        //     text: "you are affected",
-        // });
+        let info = await transporter.sendMail({
+            from: process.env.USER,
+            to: req.body.email,
+            subject: "Hello ✔",
+            text: "you are affected",
+        });
         res.status(200).send({ message: 'Affecter avec succees' });
     } catch (error) {
         res.status(500).json({ message: 'error serveur' })
