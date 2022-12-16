@@ -56,8 +56,15 @@ exports.affectcours = async (req, res) => {
 
         const cour = await cours.findById(req.params.idcours)
         console.log(cour)
-        cours.findByIdAndUpdate(req.params.idcours, { $inc: { nombreachat: cour.nombreachat +1 } }, { new: true })
+        cours.findByIdAndUpdate(req.params.idcours, { $inc: { nombreachat:  +1 } }, { new: true })
         clients.findById(req.params.idclient).populate('cours').then((updatedclient) => { res.send(updatedclient) })
+
+        // req.body.client = req.user._id
+        //      req.body.cours.map(async id=> {
+        //      const cour = await cours.findById(id)
+        //      cours.findByIdAndUpdate(id, {$inc:{nombreachat:cour.nombreachat +1}},{new:true})
+          
+        // })
 
         let transporter = nodemailer.createTransport({
             service: process.env.SERVICE,
