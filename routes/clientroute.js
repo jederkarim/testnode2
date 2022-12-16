@@ -3,7 +3,7 @@ const { addclient, getclient, deleteclient, updateclient, affectcours } = requir
 const router = express.Router();
 
 
-router.post('/client',passport.authenticate('bearer',{session:false}),addclient);
+router.post('/client',/*passport.authenticate('bearer',{session:false}),*/addclient);
 router.get('/client/:idclient',getclient);
 router.delete('/client/:idclient',deleteclient);
 router.put('/client/:idclient',updateclient);

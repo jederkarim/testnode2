@@ -20,61 +20,64 @@ exports.addclient = async (req, res) => {
     }
 }
 
-exports.getclient = async (req,res)  =>{
+exports.getclient = async (req, res) => {
     try {
-        const result = await clients.findById(req.params.idclient)
+        const result = await clients.findById(req.params.idclient).populate('cours')
         res.status(200).send(result);
     } catch (error) {
         res.status(500).json({ message: 'error serveur' })
-       
+
     }
 }
-exports.deleteclient = async (req,res)  =>{
+exports.deleteclient = async (req, res) => {
     try {
-        await clients.findByIdAndRemove(req.params.idclient,req.body)
-        res.status(200).json({message:'client deleted'});
+        await clients.findByIdAndRemove(req.params.idclient, req.body)
+        res.status(200).json({ message: 'client deleted' });
     } catch (error) {
         res.status(500).json({ message: 'error serveur' })
-            }
+    }
 }
 
 
-exports.updateclient = async (req,res)  =>{
+exports.updateclient = async (req, res) => {
     try {
-        await clients.findByIdAndUpdate(req.params.idclient,req.body)
-        res.status(200).json({message:'client Updated'});
+        await clients.findByIdAndUpdate(req.params.idclient, req.body)
+        res.status(200).json({ message: 'client Updated' });
     } catch (error) {
         res.status(500).json({ message: 'error serveur' })
 
-            }
+    }
 }
- 
+
 exports.affectcours = async (req, res) => {
 
     try {
         await clients.findByIdAndUpdate(req.params.idclient, { $push: { cours: req.params.idcours } })
+
         const cour = await cours.findById(req.params.idcours)
-       cours.findByIdAndUpdate(req.params.idcours, {$inc:{nombreachat: cour.nombreachat +1}},{new:true})
+        console.log(cour)
+        const nombreachat = 0;
+        cours.findByIdAndUpdate(req.params.idclient, { $inc: { nombreachat: cour.nombreachat +1 } }, { new: true })
+        clients.findById(req.params.idclient).populate('cours').then((updatedclient) => { res.send(updatedclient) })
 
+        // let transporter = nodemailer.createTransport({
+        //     service: process.env.SERVICE,
+        //     secure: false,
+        //     auth: {
+        //         user: process.env.USER,
+        //         pass: process.env.PASS
+        //     },
+        // });
 
-    //    let transporter = nodemailer.createTransport({
-    //     service: process.env.SERVICE,
-    //     secure: false,
-    //     auth: {
-    //       user: process.env.USER,
-    //       pass: process.env.PASS
-    //     },
-    //   });
-    
-    //   let info = await transporter.sendMail({
-    //     from: process.env.USER,
-    //     to: req.body.email,
-    //     subject: "Hello ✔",
-    //     text: "you are affected",
-    //   });
+        // let info = await transporter.sendMail({
+        //     from: process.env.USER,
+        //     to: req.body.email,
+        //     subject: "Hello ✔",
+        //     text: "you are affected",
+        // });
         res.status(200).send({ message: 'Affecter avec succees' });
     } catch (error) {
-        res.status(500).json('error serveur')
+        res.status(500).json({ message: 'error serveur' })
 
     }
 }

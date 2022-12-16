@@ -1,4 +1,3 @@
-const { version } = require('joi');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -25,4 +24,4 @@ const clientSchema = new Schema({
     timetamps: true
 }
 )
-module.exports = mongoose.model('client',clientSchema,'client')
+module.exports = mongoose.model('Client',clientSchema,'Client')

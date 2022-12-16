@@ -6,16 +6,19 @@ const passport = require('passport');
 require('./passport-strategies/bearer');
 
 
-
+require('dotenv').config();
 const app = express();
 
-require('dotenv').config();
 require('./database/connectbd');
 
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+
+app.get('/', (req,res)=>{
+    res.send('hello word!')
+})
 
 
 
